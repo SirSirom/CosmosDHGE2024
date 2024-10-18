@@ -1,0 +1,13 @@
+C:\Users\nkl\Source\Repos\CosmosDHGE2024\nectarOS\bin\Debug\net6.0\nectarOS.deps.json
+C:\Users\nkl\Source\Repos\CosmosDHGE2024\nectarOS\bin\Debug\net6.0\nectarOS.dll
+C:\Users\nkl\Source\Repos\CosmosDHGE2024\nectarOS\bin\Debug\net6.0\nectarOS.pdb
+C:\Users\nkl\Source\Repos\CosmosDHGE2024\nectarOS\obj\Debug\net6.0\nectarOS.csproj.AssemblyReference.cache
+C:\Users\nkl\Source\Repos\CosmosDHGE2024\nectarOS\obj\Debug\net6.0\nectarOS.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\nkl\Source\Repos\CosmosDHGE2024\nectarOS\obj\Debug\net6.0\nectarOS.AssemblyInfoInputs.cache
+C:\Users\nkl\Source\Repos\CosmosDHGE2024\nectarOS\obj\Debug\net6.0\nectarOS.AssemblyInfo.cs
+C:\Users\nkl\Source\Repos\CosmosDHGE2024\nectarOS\obj\Debug\net6.0\nectarOS.csproj.CoreCompileInputs.cache
+C:\Users\nkl\Source\Repos\CosmosDHGE2024\nectarOS\obj\Debug\net6.0\nectarOS.sourcelink.json
+C:\Users\nkl\Source\Repos\CosmosDHGE2024\nectarOS\obj\Debug\net6.0\nectarOS.dll
+C:\Users\nkl\Source\Repos\CosmosDHGE2024\nectarOS\obj\Debug\net6.0\refint\nectarOS.dll
+C:\Users\nkl\Source\Repos\CosmosDHGE2024\nectarOS\obj\Debug\net6.0\nectarOS.pdb
+C:\Users\nkl\Source\Repos\CosmosDHGE2024\nectarOS\obj\Debug\net6.0\ref\nectarOS.dll

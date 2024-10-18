@@ -53,6 +53,7 @@ namespace test_Os
                     {
                         Cosmos.System.Power.Shutdown();
                         break;
+                        //testkommentar
                     }
             }
         }
