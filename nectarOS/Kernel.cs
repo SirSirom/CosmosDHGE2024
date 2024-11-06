@@ -30,7 +30,9 @@ public class Kernel : Sys.Kernel
     {
         commands.Add("help", new Help(commands));
         Console.WriteLine("Cosmos booted successfully. Type a line of text to get it echoed back.");
-        Process test = new Process(memManager);
+
+        Test test = new Test(memManager, 1, 64);
+        test.run();
     }
 
     protected override void Run()

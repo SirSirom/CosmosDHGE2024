@@ -6,14 +6,25 @@ using System.Threading.Tasks;
 
 namespace nectarOS
 {
-    internal class Process
+    internal abstract class Process
     {
-        private int processID;
-        public Process(MemManager manager) {
+        protected int processID;
+        protected MemManager MemoryManager;
+
+        protected void initProcess(MemManager manager, int blocks, uint blockSize)
+        {
             processID = this.GetHashCode();
-            manager.initializeMemory(processID, 1 , 77);
-            manager.writeMemory(processID,0,Encoding.ASCII.GetBytes("Hello World"));
-            Console.WriteLine(Encoding.ASCII.GetString(manager.readMemory(processID, 0)));
+            manager.initializeMemory(processID, blocks, blockSize);
+        }
+
+        protected void write(byte[] payload, int block)
+        {
+            MemoryManager.writeMemory(processID, block, payload);
+        }
+
+        protected byte[] read(int block)
+        {
+            return MemoryManager.readMemory(processID, block);
         }
     }
 }
