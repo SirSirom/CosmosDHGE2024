@@ -15,7 +15,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyDescriptionAttribute("Use VMware Player or Workstation to deploy and debug.")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+f621b900990a4072f50effddf32ed18b33587e20")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+62bdaf778124a83fff2fd82efcb73736da46a31d")]
 [assembly: System.Reflection.AssemblyProductAttribute("nectarOS")]
 [assembly: System.Reflection.AssemblyTitleAttribute("nectarOS")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
