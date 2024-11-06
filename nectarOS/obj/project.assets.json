@@ -533,19 +533,19 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\nkl\\.nuget\\packages\\": {}
+    "C:\\Users\\eptry\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\nkl\\Source\\Repos\\CosmosDHGE2024\\nectarOS\\nectarOS.csproj",
+      "projectUniqueName": "C:\\Users\\eptry\\Source\\Repos\\CosmosDHGE2024\\nectarOS\\nectarOS.csproj",
       "projectName": "nectarOS",
-      "projectPath": "C:\\Users\\nkl\\Source\\Repos\\CosmosDHGE2024\\nectarOS\\nectarOS.csproj",
-      "packagesPath": "C:\\Users\\nkl\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\nkl\\Source\\Repos\\CosmosDHGE2024\\nectarOS\\obj\\",
+      "projectPath": "C:\\Users\\eptry\\Source\\Repos\\CosmosDHGE2024\\nectarOS\\nectarOS.csproj",
+      "packagesPath": "C:\\Users\\eptry\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\eptry\\Source\\Repos\\CosmosDHGE2024\\nectarOS\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\nkl\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\eptry\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
@@ -553,7 +553,7 @@
       ],
       "sources": {
         "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-        "C:\\Users\\nkl\\AppData\\Roaming\\Cosmos User Kit\\packages\\": {},
+        "C:\\Users\\eptry\\AppData\\Roaming\\Cosmos User Kit\\packages\\": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
@@ -613,15 +613,15 @@
         "downloadDependencies": [
           {
             "name": "Microsoft.AspNetCore.App.Ref",
-            "version": "[6.0.35, 6.0.35]"
+            "version": "[6.0.28, 6.0.28]"
           },
           {
             "name": "Microsoft.NETCore.App.Ref",
-            "version": "[6.0.35, 6.0.35]"
+            "version": "[6.0.28, 6.0.28]"
           },
           {
             "name": "Microsoft.WindowsDesktop.App.Ref",
-            "version": "[6.0.35, 6.0.35]"
+            "version": "[6.0.28, 6.0.28]"
           }
         ],
         "frameworkReferences": {
@@ -629,7 +629,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.403\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.202\\RuntimeIdentifierGraph.json"
       }
     }
   }

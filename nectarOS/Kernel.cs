@@ -29,6 +29,7 @@ public class Kernel : Sys.Kernel
     protected override void BeforeRun()
     {
         commands.Add("help", new Help(commands));
+        //ConsoleUtils.writeWithColor("/useColor(red): Hallo Welt");
         Console.WriteLine("Cosmos booted successfully. Type a line of text to get it echoed back.");
         Process test = new Process(memManager);
     }
