@@ -9,6 +9,9 @@ using System.Linq;
 using Cosmos.HAL;
 using Cosmos.System.Graphics;
 using System.Text.RegularExpressions;
+using System.Diagnostics;
+using Cosmos.System.Graphics.Fonts;
+using Cosmos.System.ExtendedASCII;
 
 namespace nectarOS;
 
@@ -19,25 +22,54 @@ public class Kernel : Sys.Kernel
     Cosmos.Core.ManagedMemoryBlock memoryBlock = new Cosmos.Core.ManagedMemoryBlock(16);
     public static Dictionary<string, Command> commands = new Dictionary<string, Command>
         {
-            {"echo",new Echo()},
-            {"sysinfo", new SysInfo(DateTime.Now) },
-            {"exit", new Exit() }
+            {Echo.call,new Echo()},
+            {SysInfo.call, new SysInfo(DateTime.Now) },
+            {Exit.call, new Exit() }
         };
 
 
 
     protected override void BeforeRun()
     {
-        commands.Add("help", new Help(commands));
-        Console.WriteLine("Cosmos booted successfully. Type a line of text to get it echoed back.");
+        commands.Add(Help.call, new Help(commands));
+        commands.Add(Time.call, new Time(commands));
 
-        Test test = new Test(memManager, 1, 64);
-        test.run();
+        Encoding.RegisterProvider(Cosmos.System.ExtendedASCII.CosmosEncodingProvider.Instance);
+        Console.OutputEncoding = CosmosEncodingProvider.Instance.GetEncoding(437);
+        SetKeyboardScanMap(new Sys.ScanMaps.DE_Standard());
+
+        Console.Clear();
+
+        ConsoleUtils.writeWithColor("<c:yellow><b:dyellow>" +
+            "  ░░░░░░░░  ░░░░  ▒▒▒▒▒▒▒▒▒▒▒▒░░░░░░░░  ░░    ░░  ░░▒▒░░▒▒▒▒▒▒  ░░░░░░░░▒▒░░░░░░" +
+            "▒▒▒▒▒▒▒▒▒▒░░  ░░  ▒▒▒▒▓▓▒▒▒▒▒▒  ▒▒▒▒▒▒▓▓▒▒▒▒  ░░  ░░▒▒▒▒▒▒▒▒▒▒░░▒▒▒▒▓▓▒▒▒▒▒▒  ░░" +
+            "▒▒▓▓▓▓▓▓▓▓▒▒  ░░▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒░░░░▒▒▒▒▒▒▒▒░░  ░░░░░░▒▒▒▒▒▒  ░░░░▒▒▒▒▒▒▓▓▒▒░░░░" +
+            "▒▒▒▒▓▓▓▓▒▒▓▓▒▒  ▒▒▒▒▒▒▒▒▒▒▒▒░░░░░░▒▒▒▒▒▒▒▒▒▒▒▒    ░░░░▒▒▒▒░░░░░░░░▒▒▒▒▒▒▒▒▓▓▒▒  " +
+            "░░▒▒▒▒▒▒▓▓▒▒▒▒  ░░░░░░░░░░  ░░░░░░▒▒▒▒▒▒▒▒▒▒▒▒░░    ░░        ░░░░░░▒▒▒▒▒▒▒▒▒▒░░" +
+            "░░▒▒▒▒▒▒▒▒▒▒▒▒  ░░▒▒▒▒▒▒▒▒▒▒  ░░  ▒▒▒▒▓▓▓▓▒▒▒▒  ░░▒▒▒▒▒▒▒▒▒▒  ░░  ▒▒▒▒▒▒▒▒▒▒▒▒  " +
+            "▒▒▒▒▒▒▒▒▒▒▒▒▒▒░░▒▒▒▒▓▓▓▓▒▒▓▓░░░░▒▒▒▒▒▒▓▓▓▓▓▓░░░░▒▒▒▒▒▒▒▒▒▒▓▓▒▒  ▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒" +
+            "░░▓▓▒▒▓▓▒▒▒▒  ▒▒▒▒▒▒▓╔════════════════════════════════════╗▓▓▓  ░░▒▒▒▒▒▒▒▒▒▒░░▒▒" +
+            "░░▒▒▒▒▒▒▒▒░░░░░░▒▒▒▒▓║              ╖           ╓──╖ ╓──┐ ║▒▓▓▒▒      ░░░░  ░░░░" +
+            "░░░░░░░░░░░░░░▒▒  ▒▒▓║ ╓┐ ╓ ╓─╖ ╓── ╫── ╓─╖ ╖┌─ ║  ║ ╙──╖ ║▒▒▒░░▒▒▒▒▒▒▒▒▒▒░░  ░░" +
+            "▒▒▒▒▓▓▓▓▓▓▓▓  ░░▒▒▒▒▒║ ║└┐║ ╟─╜ ║   ║   ║┌╢ ╟┘  ║  ║ │  ║ ║▒░░▒▒▒▒▒▒▒▒▒▒▓▓▒▒░░░░" +
+            "▒▒▒▒▒▒▓▓▓▓▓▓▒▒  ░░▒▒▒║ ╜ └╜ ╨── ╨── ╨─┘ ╙┘╨ ╨   ╙──╜ └──╜ ║▒░░▒▒░░▒▒▓▓▒▒▓▓▒▒▒▒  " +
+            "▒▒▒▒▓▓▓▓▓▓▓▓▓▓░░░░▒▒░╚═╦══════════════════════════════════╝ ▒▒░░  ▒▒▒▒▒▒▒▒▒▒▒▒░░" +
+            "▒▒▓▓▒▒▒▒▒▒▓▓▒▒░░░░▒▒▒▒▒└ Made by Niklas,Elias,Conner,Tim ▒  ░░░░  ▒▒▒▒▒▒▒▒▒▒▒▒  " +
+            "▓▓▓▓▒▒▒▒▓▓▓▓▒▒  ▒▒▒▒▓▓▓▓▓▓▓▓░░░░▒▒▒▒▒▒▒▒▒▒▒▒▒▒░░▒▒▒▒▓▓▒▒▓▓▓▓  ░░  ░░▒▒▒▒▒▒▒▒░░░░" +
+            "░░▒▒▓▓▒▒▓▓▒▒░░▒▒▒▒▒▒▓▓▓▓▒▒▒▒▒▒  ░░▒▒▒▒▒▒▒▒▒▒  ▒▒▒▒▒▒▒▒▒▒▓▓▓▓░░▒▒  ░░▒▒▒▒▒▒▒▒  ▒▒" +
+            "░░▒▒▒▒▒▒▒▒▒▒░░▒▒░░▒▒▒▒▒▒▒▒▒▒▓▓░░  ░░░░▒▒▒▒░░░░░░░░▒▒▓▓▓▓▒▒▓▓▓▓░░░░░░░░░░░░░░  ▒▒" +
+            "  ░░░░░░░░  ░░░░  ▒▒▒▒▒▒▒▒▒▒▒▒▒▒░░▒▒▒▒▒▒▒▒  ░░░░  ▒▒▒▒▓▓▒▒▒▒▒▒  ▒▒▒▒▒▒▒▒▒▒░░  ░░" +
+            "▒▒▒▒▓▓▓▓▓▓▒▒░░░░░░▒▒▒▒▒▒▒▒▒▒▒▒░░▒▒▒▒▓▓▓▓▒▒▒▒      ▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▓▓▓▓▒▒▓▓▓▓░░  " +
+            "▒▒▒▒▒▒▓▓▒▒▓▓▒▒  ▒▒▓▓▒▒▓▓▓▓▒▒▒▒▒▒▒▒▒▒▒▒▒▒▓▓▒▒░░░░▒▒  ▒▒▒▒▒▒▒▒░░▒▒▒▒▒▒▒▒▒▒▓▓▒▒▒▒  " +
+            "░░▒▒▒▒▒▒▒▒▒▒▒▒░░  ▒▒▒▒▒▒▒▒▒▒░░▒▒░░▒▒▒▒▒▒▒▒▒▒▒▒  ▒▒░░░░▒▒▒▒░░░░▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒  "
+        );
+        System.Threading.Thread.Sleep(1000);
+        Console.Clear();
     }
 
     protected override void Run()
     {
-        Console.Write("Input: ");
+        ConsoleUtils.writeWithColor("<c:green>- <c:yellow>Input<c:green>:");
         var input = Console.ReadLine();
         string[] argv = input.Split(' ');
         try
@@ -46,7 +78,7 @@ public class Kernel : Sys.Kernel
         }
         catch (NullReferenceException)
         {
-            Console.WriteLine("couldnt find specified Command: {0}", argv[0]);
+            ConsoleUtils.writeLineWithColor("<b:dred><c:red>couldnt find specified Command: "+ argv[0]);
         }
         
         switch (argv[0])

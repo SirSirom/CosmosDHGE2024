@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using nectarOS;
 
@@ -11,15 +13,15 @@ namespace nectarOS
 
     {
         public string help { get; }
-
+        public static string call { get; }
         public void run(string[] args);
     }
 
     public class Echo : Command
     {
-        private string _help = "will repeat the following input";
+        public static string call { get => "echo";}
 
-        public string help { get => _help; }
+        public string help { get => "will repeat the following input"; }
 
         public void run(string[] argv)
         {
@@ -34,9 +36,9 @@ namespace nectarOS
 
     public class Exit : Command
     {
-        private string _help = "shutdown the system";
+        public static string call { get => "exit"; }
 
-        public string help { get => _help; }
+        public string help { get => "shutdown the system"; }
 
         public void run(string[] argv)
         {
@@ -47,8 +49,8 @@ namespace nectarOS
 
     public class SysInfo : Command
     {
-        private string _help = "get Information about the system";
-        public string help { get => _help; }
+        public static string call { get => "sysInfo"; }
+        public string help { get => "get Information about the system"; }
 
         public SysInfo(DateTime sysStartTime)
         {
@@ -72,8 +74,8 @@ namespace nectarOS
 
     public class Help : Command
     {
-        private string _help = "get Information about a command";
-        public string help { get => _help; }
+        public static string call { get => "help"; }
+        public string help { get => "get Information about a command"; }
 
         public Help(Dictionary<String,Command> commands)
         {
@@ -91,6 +93,32 @@ namespace nectarOS
             {
                 Console.WriteLine("couldnt find specified Command: {0}", argv[0]);
             }
+        }
+    }
+
+    public class Time: Command
+    {
+        public static string call { get => "time"; }
+        public string help { get => "time the execution of a Command"; }
+
+        public Time(Dictionary<String, Command> commands)
+        {
+            this.commands = commands;
+        }
+        private Dictionary<String, Command> commands;
+
+        public void run(string[] argv) {
+            Stopwatch sw = new Stopwatch();
+            try
+            {
+                commands[argv[0]].run(argv.Skip(1).ToArray());
+            }
+            catch (NullReferenceException)
+            {
+                Console.WriteLine("couldnt find specified Command: {0}", argv[0]);
+            }
+            sw.Stop();
+            Console.WriteLine("waited {sw.ElapsedMilliseconds} for execution of {argv[0]}");
         }
     }
 }
