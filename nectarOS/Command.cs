@@ -14,25 +14,34 @@ namespace nectarOS
     {
         public string help { get; }
         public static string call { get; }
-        public void run(string[] args);
+        public bool run(string[] args);
     }
 
-    public class Cal : Command
+    public class RunP : Command
     {
-        private Calculator calculator;
-        public Cal(MemManager manager) {
-            this.calculator = new Calculator(manager);
+        private static Dictionary<string, Process> programms = new Dictionary<string, Process>
+        {
+            {Calculator.call,new Calculator()},
+        };
+        
+
+        public static string call { get => "runP";}
+        public string help { get =>"run a programm";
         }
 
-        public static string call { get => "cal";}
-        public string help { get => "" +
-                "input two numbers an an operator to get the solution to the equasion." +
-                "They must be seperated by one space." +
-                "Enter save after the equasion to save it." +
-                "Enter cal read to get the last saved equation"; }
-        public void run(string[] args)
+        public bool run(string[] argv)
         {
-            calculator.run(args);
+            try
+            {
+                programms[argv[0]].start();
+                return true;
+            }
+            catch (NullReferenceException)
+            {
+                ConsoleUtils.writeLineWithColor("<b:dred><c:red>couldnt find specified Programm: " + argv[0]);
+                return true;
+            }
+
         }
     }
 
@@ -42,13 +51,14 @@ namespace nectarOS
 
         public string help { get => "will repeat the following input"; }
 
-        public void run(string[] argv)
+        public bool run(string[] argv)
         {
             foreach (var arg in argv)
             {
                 Console.Write("{0} ", arg);
             }
             Console.WriteLine();
+            return true;
         }
 
     }
@@ -59,9 +69,9 @@ namespace nectarOS
 
         public string help { get => "shutdown the system"; }
 
-        public void run(string[] argv)
+        public bool run(string[] argv)
         {
-            Cosmos.System.Power.Shutdown();
+            return false;
         }
 
     }
@@ -78,10 +88,11 @@ namespace nectarOS
 
         public DateTime sysStartTime;
 
-        public void run(string[] argv)
+        public bool run(string[] argv)
         {
             Console.WriteLine("running since: {0}",sysStartTime);
             Console.WriteLine("runtime: {0} ",getSysRunTime());
+            return true;
         }
 
         public TimeSpan getSysRunTime()
@@ -102,7 +113,7 @@ namespace nectarOS
         }
         private Dictionary<String,Command> commands;
 
-        public void run(string[] argv)
+        public bool run(string[] argv)
         {
             try
             {
@@ -112,6 +123,7 @@ namespace nectarOS
             {
                 Console.WriteLine("couldnt find specified Command: {0}", argv[0]);
             }
+            return true;
         }
     }
 
@@ -120,13 +132,13 @@ namespace nectarOS
         public static string call { get => "time"; }
         public string help { get => "time the execution of a Command"; }
 
+        private Dictionary<String, Command> commands;
         public Time(Dictionary<String, Command> commands)
         {
             this.commands = commands;
         }
-        private Dictionary<String, Command> commands;
 
-        public void run(string[] argv) {
+        public bool run(string[] argv) {
             Stopwatch sw = new Stopwatch();
             try
             {
@@ -138,6 +150,7 @@ namespace nectarOS
             }
             sw.Stop();
             Console.WriteLine("waited {sw.ElapsedMilliseconds} for execution of {argv[0]}");
+            return true;
         }
     }
 }

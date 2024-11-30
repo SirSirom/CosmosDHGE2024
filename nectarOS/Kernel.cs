@@ -25,7 +25,7 @@ public class Kernel : Sys.Kernel
             {Echo.call,new Echo()},
             {SysInfo.call, new SysInfo(DateTime.Now) },
             {Exit.call, new Exit() },
-            {Cal.call, new Cal(memManager) }
+            {RunP.call, new RunP() }
         };
 
 
@@ -69,17 +69,19 @@ public class Kernel : Sys.Kernel
 
     protected override void Run()
     {
+        bool kr = true;
         ConsoleUtils.writeWithColor("<c:green>- <c:yellow>Input<c:green>:");
         var input = Console.ReadLine();
         string[] argv = input.Split(' ');
         try
         {
-            commands[argv[0]].run(argv.Skip(1).ToArray());
+            kr = commands[argv[0]].run(argv.Skip(1).ToArray());
         }
         catch (NullReferenceException)
         {
             ConsoleUtils.writeLineWithColor("<b:dred><c:red>couldnt find specified Command: "+ argv[0]);
         }
+        if (!kr) {Cosmos.System.Power.Shutdown();}
     }
 }   
 

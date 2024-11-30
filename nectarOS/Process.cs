@@ -9,24 +9,26 @@ namespace nectarOS
     internal abstract class Process
     {
         protected int processID;
-        protected MemManager MemoryManager;
 
-        protected void initProcess(MemManager manager, int blocks, uint blockSize)
+        public void start()
         {
-            this.MemoryManager = manager;
+            while (run()){}
+        }
+        protected abstract bool run();
+        protected void initProcess(int blocks, uint blockSize)
+        {
             this.processID = this.GetHashCode();
-            Console.WriteLine("exec Mem init");
-            manager.initializeMemory(processID, blocks, blockSize);
+            MemManager.initializeMemory(processID, blocks, blockSize);
         }
 
         protected void write(byte[] payload, int block)
         {
-            MemoryManager.writeMemory(processID, block, payload);
+            MemManager.writeMemory(processID, block, payload);
         }
 
         protected byte[] read(int block)
         {
-            return MemoryManager.readMemory(processID, block);
+            return MemManager.readMemory(processID, block);
         }
     }
 }
