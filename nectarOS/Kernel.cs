@@ -24,9 +24,9 @@ public class Kernel : Sys.Kernel
         {
             {Echo.call,new Echo()},
             {SysInfo.call, new SysInfo(DateTime.Now) },
-            {Exit.call, new Exit() }
+            {Exit.call, new Exit() },
+            {Cal.call, new Cal(memManager) }
         };
-
 
 
     protected override void BeforeRun()
@@ -63,7 +63,7 @@ public class Kernel : Sys.Kernel
             "▒▒▒▒▒▒▓▓▒▒▓▓▒▒  ▒▒▓▓▒▒▓▓▓▓▒▒▒▒▒▒▒▒▒▒▒▒▒▒▓▓▒▒░░░░▒▒  ▒▒▒▒▒▒▒▒░░▒▒▒▒▒▒▒▒▒▒▓▓▒▒▒▒  " +
             "░░▒▒▒▒▒▒▒▒▒▒▒▒░░  ▒▒▒▒▒▒▒▒▒▒░░▒▒░░▒▒▒▒▒▒▒▒▒▒▒▒  ▒▒░░░░▒▒▒▒░░░░▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒  "
         );
-        System.Threading.Thread.Sleep(1000);
+        System.Threading.Thread.Sleep(3000);
         Console.Clear();
     }
 
@@ -79,23 +79,6 @@ public class Kernel : Sys.Kernel
         catch (NullReferenceException)
         {
             ConsoleUtils.writeLineWithColor("<b:dred><c:red>couldnt find specified Command: "+ argv[0]);
-        }
-        
-        switch (argv[0])
-        {
-            
-            case "save":
-                {
-
-                    memoryBlock.Write16((uint)Convert.ToInt16(argv[1]), (ushort)Convert.ToInt16(argv[2]));
-                    break;
-                }
-            case "load":
-                {
-
-                    Console.WriteLine("Reading: {0}", memoryBlock.Read16((uint)Convert.ToInt16(argv[1])));
-                    break;
-                }
         }
     }
 }   

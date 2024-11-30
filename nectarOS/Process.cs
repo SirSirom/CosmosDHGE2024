@@ -13,7 +13,9 @@ namespace nectarOS
 
         protected void initProcess(MemManager manager, int blocks, uint blockSize)
         {
-            processID = this.GetHashCode();
+            this.MemoryManager = manager;
+            this.processID = this.GetHashCode();
+            Console.WriteLine("exec Mem init");
             manager.initializeMemory(processID, blocks, blockSize);
         }
 
