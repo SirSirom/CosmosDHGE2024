@@ -17,6 +17,25 @@ namespace nectarOS
         public void run(string[] args);
     }
 
+    public class Cal : Command
+    {
+        private Calculator calculator;
+        public Cal(MemManager manager) {
+            this.calculator = new Calculator(manager);
+        }
+
+        public static string call { get => "cal";}
+        public string help { get => "" +
+                "input two numbers an an operator to get the solution to the equasion." +
+                "They must be seperated by one space." +
+                "Enter save after the equasion to save it." +
+                "Enter cal read to get the last saved equation"; }
+        public void run(string[] args)
+        {
+            calculator.run(args);
+        }
+    }
+
     public class Echo : Command
     {
         public static string call { get => "echo";}
