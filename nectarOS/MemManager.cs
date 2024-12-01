@@ -9,9 +9,9 @@ namespace nectarOS
 {
     public class MemManager
     {
-        private Dictionary<int, uint> blockSizes = new Dictionary<int, uint>();
-        private Dictionary<int, ManagedMemoryBlock[]> memory = new Dictionary<int, ManagedMemoryBlock[]>();
-        public int initializeMemory(int pid, int blocks, uint blockSize)
+        static private Dictionary<int, uint> blockSizes = new Dictionary<int, uint>();
+        static private Dictionary<int, ManagedMemoryBlock[]> memory = new Dictionary<int, ManagedMemoryBlock[]>();
+        static public int initializeMemory(int pid, int blocks, uint blockSize)
         {
  
             blockSizes[pid] = blockSize;
@@ -19,7 +19,7 @@ namespace nectarOS
             return 0;
         }
 
-        public int writeMemory(int pid,int blockIndex, byte[] payload)
+        public static int writeMemory(int pid,int blockIndex, byte[] payload)
         {
             if (!memory.ContainsKey(pid))
             {
@@ -37,7 +37,7 @@ namespace nectarOS
             return 0;
         }
 
-        public byte[] readMemory(int pid, int blockIndex)
+        public static byte[] readMemory(int pid, int blockIndex)
         {
             if (!memory.ContainsKey(pid))
             {

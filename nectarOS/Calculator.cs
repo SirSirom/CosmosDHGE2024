@@ -11,57 +11,97 @@ namespace nectarOS
 {
 	internal class Calculator : Process
 	{
-		public Calculator(MemManager manager) {
-            initProcess(manager, 8, 64);
+        public static Dictionary<string, Command> commands = new Dictionary<string, Command>
+        {
+            {Exit.call, new Exit() },
+        };
+
+        public static string call { get => "cal"; }
+        public static string help
+        {
+            get =>
+                "input two numbers an an operator to get the solution to the equasion." +
+                "They must be seperated by one space." +
+                "Enter save after the equasion to save it." +
+                "Enter cal read to get the last saved equation";
+        }
+
+        public Calculator() {
+            initProcess( 8, 64);
         }
 
 		int count = 0;
 
-		public void run(string[] args)
+		protected override bool run()
 		{
-			if (args.Length == 1 && args[0] == "read")
-			{
-				if (count < 8)
-				{
-					for (int i = 0; i < count; i++)
-					{
-						Console.WriteLine(Encoding.ASCII.GetString(this.read(i)));
-					}
-				} else
-				{
-					for (int i = 0; i <= 7; i++)
-					{
-                        Console.WriteLine(Encoding.ASCII.GetString(this.read(i)));
-                    }
-				}
-			}
-			else if (args.Length >= 3) {
-				float erg = 0;
-				if (float.TryParse(args[0], out float first) && float.TryParse(args[2], out float second)) {
-					switch (args[1]) {
-						case "+": erg = first + second; break;
-						case "-": erg = first - second; break;
-						case "*": erg = first * second; break;
-						case "/": erg = first / second; break;
-						default: ConsoleUtils.writeWithColor("<c:red><b:black>" + "Kein gültiges Rechenzeichen"); Console.WriteLine(); break;
-					}
-					Console.WriteLine(erg);
-				} else {
-					ConsoleUtils.writeWithColor("<c:red><b:black>" + "Keine gültige Eingabe");
-					Console.WriteLine();
-				}
+			
+            ConsoleUtils.writeWithColor("<c:green>- <c:yellow>Calculator Input<c:green>:");
+            var input = Console.ReadLine();
+            string[] argv = input.Split(' ');
+			return handleInput(argv);
+        }
 
-                if (args.Length == 4 && args[3] == "write")
+		private bool handleInput(string[] argv) {
+
+            try
+            {
+                return commands[argv[0]].run(argv.Skip(1).ToArray());
+            }
+            catch (NullReferenceException)
+            {
+
+                if (argv.Length == 1 && argv[0] == "read")
                 {
-                    String saver = "";
-                    for (int i = 0; i <= 2; i++)
+                    if (count < 8)
                     {
-                        saver += args[i];
+                        for (int i = 0; i < count; i++)
+                        {
+                            Console.WriteLine(Encoding.ASCII.GetString(this.read(i)));
+                        }
                     }
-                    saver += "=" + erg;
-                    this.write(Encoding.ASCII.GetBytes(saver), count%8);
-					count++;
+                    else
+                    {
+                        for (int i = 0; i <= 7; i++)
+                        {
+                            Console.WriteLine(Encoding.ASCII.GetString(this.read(i)));
+                        }
+                    }
                 }
+                else if (argv.Length >= 3)
+                {
+                    float erg = 0;
+                    if (float.TryParse(argv[0], out float first) && float.TryParse(argv[2], out float second))
+                    {
+                        switch (argv[1])
+                        {
+                            case "+": erg = first + second; break;
+                            case "-": erg = first - second; break;
+                            case "*": erg = first * second; break;
+                            case "/": erg = first / second; break;
+                            default: ConsoleUtils.writeWithColor("<c:red><b:black>" + "Kein gültiges Rechenzeichen"); Console.WriteLine(); break;
+                        }
+                        Console.WriteLine(erg);
+                    }
+                    else
+                    {
+                        ConsoleUtils.writeWithColor("<c:red><b:black>" + "Keine gültige Eingabe");
+                        Console.WriteLine();
+                    }
+
+                    if (argv.Length == 4 && argv[3] == "write")
+                    {
+                        String saver = "";
+                        for (int i = 0; i <= 2; i++)
+                        {
+                            saver += argv[i];
+                        }
+                        saver += "=" + erg;
+                        this.write(Encoding.ASCII.GetBytes(saver), count % 8);
+                        count++;
+
+                    }
+                }
+                return true;
             }
 		}
 	}
